@@ -1,0 +1,44 @@
+{
+  "name": "ngx-ngrx-component-store-debug-tools-demo",
+  "version": "0.0.0",
+  "author": "Gergely Szerovay",
+  "license": "MIT",
+  "scripts": {
+    "start-demo": "ng serve demo",
+    "build-lib": "ng build ngx-ngrx-component-store-debug-tools",
+    "build-lib-watch": "ng build ngx-ngrx-component-store-debug-tools --watch"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^14.2.0",
+    "@angular/common": "^14.2.0",
+    "@angular/compiler": "^14.2.0",
+    "@angular/core": "^14.2.0",
+    "@angular/forms": "^14.2.0",
+    "@angular/platform-browser": "^14.2.0",
+    "@angular/platform-browser-dynamic": "^14.2.0",
+    "@angular/router": "^14.2.0",
+    "@ngrx/component-store": "^14.3.2",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.18",
+    "recursive-diff": "^1.0.8",
+    "rxjs": "~7.5.0",
+    "tailwindcss": "^3.2.1",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^14.2.6",
+    "@angular/cli": "~14.2.6",
+    "@angular/compiler-cli": "^14.2.0",
+    "@types/jasmine": "~4.0.0",
+    "jasmine-core": "~4.3.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "ng-packagr": "^14.2.0",
+    "typescript": "~4.7.2"
+  }
+}

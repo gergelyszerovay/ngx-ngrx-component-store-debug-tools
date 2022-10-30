@@ -1,0 +1,30 @@
+{
+  "name": "ngx-ngrx-component-store-debug-tools",
+  "version": "0.0.6",
+  "description": "Debug decorators and utilities for @ngrx/component-store",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools.git"
+  },  
+  "keywords": [
+    "Angular",
+    "Redux",
+    "NgRx",
+    "Schematics",
+    "Local State",
+    "Component State",
+    "State management"
+  ],
+  "author": "Gergely Szerovay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools/issues"
+  },  
+  "peerDependencies": {
+    "rxjs": "~7.5.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "recursive-diff": "^1.0.8"
+  }
+}
