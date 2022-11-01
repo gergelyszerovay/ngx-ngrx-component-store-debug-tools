@@ -1,4 +1,4 @@
-# Debug decorators and utilities for [@ngrx/component-store](https://ngrx.io/guide/component-store) 
+# Debug decorators and utilities for [@ngrx/component-store](https://ngrx.io/guide/component-store) and Angular
 
 ## Try out the demo app 
 
