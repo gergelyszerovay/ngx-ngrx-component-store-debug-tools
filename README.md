@@ -120,7 +120,7 @@ Since the effect calls the updater, the updater call and the state change are al
 
 ### Store IDs
 
-If we use a separate store for every component instance and create multiple component instances, each of them has an unique id:
+If we use a separate store for every component instance and create multiple component instances, each of them has an unique id (`0001`, `0002`, `0003`):
 
 ![console](https://raw.githubusercontent.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools/master/.github/images/5-multi.png)
 
@@ -128,8 +128,8 @@ If we use a separate store for every component instance and create multiple comp
 
 The following [console log levels](https://developer.mozilla.org/en-US/docs/Web/API/Console/log) are supported, adjustable by the decorator's `logLevel` parameter:
 
-- `log` 
-- `info` 
-- `debug` 
-- `trace` 
-- `off` and undefined: these turns off the logging
+- `'log'` 
+- `'info'` 
+- `'debug'` 
+- `'trace'` 
+- `'off'` and `undefined`: these turns off the logging
