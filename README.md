@@ -20,7 +20,7 @@ Clone the repo, then `ng serve demo`
 
 ### Yarn
 
-`yarn add ngx-ngrx-component-store-debug-tools --dev`
+`yarn add ngx-ngrx-component-store-debug-tools`
 
 ## Usage
 

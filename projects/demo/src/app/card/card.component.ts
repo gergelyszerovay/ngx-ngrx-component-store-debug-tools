@@ -14,7 +14,7 @@ export class CardComponent implements OnInit {
 
   constructor(
     protected store: CardStore
-  ) { 
+  ) {
   }
 
   ngOnInit(): void {
@@ -26,4 +26,9 @@ export class CardComponent implements OnInit {
     });
   }
 
+  loadBenWithMutation():void {
+    this.store.updateUserWithMutation({
+      name: 'Ben'
+    });
+  }
 }

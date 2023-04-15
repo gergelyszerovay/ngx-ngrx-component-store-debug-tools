@@ -1,9 +1,15 @@
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LogObservable } from 'ngx-ngrx-component-store-debug-tools';
-import { Subscription } from 'rxjs';
+import { FreezeObservable, LogObservable } from 'ngx-ngrx-component-store-debug-tools';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { timer } from 'rxjs';
+
+interface demoObjectType {
+  value: number;
+}
+
+const initialValue: demoObjectType = { value: 1 };
 
 @Component({
   selector: 'app-root',
@@ -15,7 +21,22 @@ export class AppComponent implements OnDestroy {
   title = 'demo';
   logSubscription?: Subscription;
 
+  demoSubject$ = new BehaviorSubject<demoObjectType>(initialValue);
+  demoSubjectLogSubscription?: Subscription;
+  demoSubjectFreezeSubscription?: Subscription;
+
   constructor() {
+    this.demoSubjectLogSubscription = LogObservable('demoSubject$', this.demoSubject$, initialValue);
+    this.demoSubjectFreezeSubscription = FreezeObservable(this.demoSubject$);
+    this.demoSubject$.next(initialValue);
+  }
+
+  mutateDemoSubject(): void {
+    const s = this.demoSubject$.subscribe(v => {
+      v.value = 3;
+    });
+    this.demoSubject$.next({ value: 2 });
+    s.unsubscribe();
   }
 
   startTimer(): void {
@@ -25,6 +46,8 @@ export class AppComponent implements OnDestroy {
 
   stopTimer(): void {
     this.logSubscription?.unsubscribe();
+    this.demoSubjectLogSubscription?.unsubscribe();
+    this.demoSubjectFreezeSubscription?.unsubscribe();
   }
 
   ngOnDestroy(): void {

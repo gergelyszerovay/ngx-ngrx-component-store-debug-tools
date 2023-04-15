@@ -1,10 +1,12 @@
 import { Injectable } from "@angular/core";
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
-import { delay, Observable, of, Subject, switchMap } from "rxjs";
-import { LogUpdater, LogEffect } from "ngx-ngrx-component-store-debug-tools"
+import { delay, Observable, of, switchMap } from "rxjs";
+import { LogUpdater, LogEffect, DebugToolLogLevel } from "ngx-ngrx-component-store-debug-tools"
 import { LogState } from "ngx-ngrx-component-store-debug-tools";
 
-const logLevel = 'debug';
+declare const ngDevMode: boolean;
+
+const logLevel: DebugToolLogLevel = ngDevMode ? 'debug' : 'off';
 
 export interface User {
   name: string | null
@@ -30,7 +32,7 @@ export class CardStore extends ComponentStore<CardState> {
     return of({
       name: 'Frank'
     }).pipe(delay(1000));
-  } 
+  }
 
   @LogEffect({ logLevel })
   readonly fetchUserFromServer = this.effect((id$: Observable<number>) => {
@@ -52,5 +54,10 @@ export class CardStore extends ComponentStore<CardState> {
     };
   });
 
+  @LogUpdater({ logLevel })
+  readonly updateUserWithMutation = this.updater((state: CardState, user: User): CardState => {
+    state.user = user;
+    return state;
+  });
 }
 

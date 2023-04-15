@@ -1,11 +1,11 @@
 {
   "name": "ngx-ngrx-component-store-debug-tools",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "Debug decorators and utilities for @ngrx/component-store",
   "repository": {
     "type": "git",
     "url": "https://github.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools.git"
-  },  
+  },
   "keywords": [
     "Angular",
     "Redux",
@@ -19,7 +19,7 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools/issues"
-  },  
+  },
   "peerDependencies": {
     "rxjs": "~7.5.0"
   },

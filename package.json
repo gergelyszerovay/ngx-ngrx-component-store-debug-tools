@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start-demo": "ng serve demo",
+    "build-demo": "ng build demo",
     "build-lib": "ng build ngx-ngrx-component-store-debug-tools",
     "build-lib-watch": "ng build ngx-ngrx-component-store-debug-tools --watch"
   },
