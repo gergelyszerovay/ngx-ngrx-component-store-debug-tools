@@ -1,4 +1,4 @@
-# Debug decorators and utilities for [@ngrx/component-store](https://ngrx.io/guide/component-store) and Angular
+# Debug decorators and utilities for [@ngrx/component-store](https://ngrx.io/guide/component-store) 
 
 ## Try out the demo app 
 
@@ -20,15 +20,15 @@ Clone the repo, then `ng serve demo`
 
 ### Yarn
 
-`yarn add ngx-ngrx-component-store-debug-tools`
+`yarn add ngx-ngrx-component-store-debug-tools --dev`
 
 ## Usage
 
 The demo app has three `Card` component, each has its own Store instance.
 
-### `@LogState` decorator
+### `LogState` function
 
-After every state change, this decorator displays the current state of the store and the changes since the last state change.
+This function subscribes to the store's state, and after every state change, it displays the current state of the store and the changes since the last state change.
 
 ```ts
 const logLevel = 'debug';
@@ -42,8 +42,8 @@ export interface CardState {
 }
 
 @Injectable()
-@LogState({ logLevel })
 export class CardStore extends ComponentStore<CardState> {
+  storeId = LogState(this, { logLevel: 'debug' });
 
   constructor() {
     super({
