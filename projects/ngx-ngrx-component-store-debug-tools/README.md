@@ -26,9 +26,9 @@ Clone the repo, then `ng serve demo`
 
 The demo app has three `Card` component, each has its own Store instance.
 
-### `@LogState` decorator
+### `@LogState` function
 
-After every state change, this decorator displays the current state of the store and the changes since the last state change.
+This function subscribes to the store's state, and after every state change, it displays the current state of the store and the changes since the last state change.
 
 ```ts
 const logLevel = 'debug';
@@ -42,8 +42,8 @@ export interface CardState {
 }
 
 @Injectable()
-@LogState({ logLevel })
 export class CardStore extends ComponentStore<CardState> {
+  storeId = LogState(this, { logLevel: 'debug' });
 
   constructor() {
     super({

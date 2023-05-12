@@ -17,8 +17,8 @@ export interface CardState {
 }
 
 @Injectable()
-@LogState({ logLevel })
 export class CardStore extends ComponentStore<CardState> {
+  storeId = LogState(this, { logLevel: 'debug' });
 
   constructor() {
     super({

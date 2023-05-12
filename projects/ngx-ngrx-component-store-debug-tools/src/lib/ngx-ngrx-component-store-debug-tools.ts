@@ -1,5 +1,6 @@
 import { isObservable, Observable, Subject, Subscription } from "rxjs";
 import { getDiff } from 'recursive-diff';
+import { ComponentStore } from "@ngrx/component-store";
 
 declare const ngDevMode: boolean;
 
@@ -21,33 +22,40 @@ interface LoggerParams {
   freeze?: boolean;
 }
 
+class ComponentStoreWithName<T extends object> extends ComponentStore<T> {
+  storeName? = '';
+}
+
 function decorateWithLogger(params: LoggerParams, type: 'updater' | 'effect') {
   return function(target: any, propertyKey: string) {
     if (!params?.logLevel || params?.logLevel === 'off' || ngTestMode) {
       return;
     }
 
-    const storeName = target.constructor.name;
     const logFn = console[params.logLevel!];
     const symbol = Symbol();
 
-    const getter = function() {
+    const getter = function(this: { [symbol]: unknown }) {
       return this[symbol];
     };
 
-    const setter = function(fn: any) {
+    const setter = function(this: { [symbol]: unknown, storeId: string }, fn: any) {
       this[symbol] = function(...args: any[]) {
-        const storeId = this._debugStoreId;
+        const storeId = this?.storeId || '';
         if (args.length === 1) {
           const args0 = args[0]
           if (isObservable(args0)) {
+            // TODO: memory leak
             (args[0] as Subject<any>).subscribe(value => {
-              logFn(`${storeName}.${propertyKey} (${storeId}) (${type}):`, value, '(from observable)');
+              logFn(`${storeId}.${propertyKey} (${type}):`, value, '(from observable)');
             });
           }
           else {
-            logFn(`${storeName}.${propertyKey} (${storeId}) (${type}):`, args[0]);
+            logFn(`${storeId}.${propertyKey} (${type}):`, args[0]);
           }
+        }
+        else {
+          logFn(`${storeId}.${propertyKey} (${type})`);
         }
         return fn.apply(target, args);
       }
@@ -118,46 +126,31 @@ export function FreezeObservable(observable: Observable<any>): Subscription | un
   });
 }
 
-export function LogState(params: LoggerParams) {
-  if (ngDevMode) {
-    if (ngTestMode) {
-      return (ctr: any) => ctr;
+export function LogState<T extends object>(store: ComponentStoreWithName<T>, params: LoggerParams): string {
+  storeId ++;
+  const storeIdString = store.constructor.name + '[' +  ("#000" + storeId).slice(-4) + ']';
+  if (ngDevMode && !ngTestMode) {
+    store.storeName = store.constructor.name;
+
+    let freezeSubscription: Subscription | undefined;
+    let debugSubscription: Subscription | undefined;
+
+    if (params.freeze !== false) {
+      freezeSubscription = FreezeObservable(store["state$"] as Observable<any>);
     }
-    return (ctr: any) => {
-
-      const storeName = ctr.name;
-
-      return new Proxy(ctr, {
-        construct(c, args) {
-          storeId ++;
-          const storeIdString = ("#000" + storeId).slice(-4);
-
-          const store = Reflect.construct(c, args);
-
-          store._debugStoreId = storeIdString;
-
-          if (params.freeze !== false) {
-            store._freezeSubscription = FreezeObservable(store.state$ as Observable<any>);
-          }
-          if (!(!params?.logLevel || params?.logLevel === 'off')) {
-            store._debugSubscription = LogObservable(`${storeName}.state$ (${storeIdString})`, store.state$ as Observable<any>, {}, params.logLevel);
-          }
-
-          const originalNgOnDestroy = store.ngOnDestroy;
-          store.ngOnDestroy = function(...ngOnDestroyArgs: any[]) {
-            originalNgOnDestroy.apply(this, ngOnDestroyArgs);
-            this._freezeSubscription?.unsubscribe();
-            this._debugSubscription?.unsubscribe();
-          };
-
-          return store;
-        }
-      });
+    if (!(!params?.logLevel || params?.logLevel === 'off')) {
+      debugSubscription = LogObservable(`${storeIdString}.state$`, store.state$ as Observable<any>, {}, params.logLevel);
     }
+
+    const originalNgOnDestroy = store["ngOnDestroy"];
+    store["ngOnDestroy"] = function(...ngOnDestroyArgs: []) {
+      originalNgOnDestroy.apply(this, ngOnDestroyArgs);
+      freezeSubscription?.unsubscribe();
+      debugSubscription?.unsubscribe();
+    };
+
   }
-  else {
-    return (ctr: any) => ctr;
-  }
+  return storeIdString;
 }
 
 // Source: https://github.com/ngrx/platform/blob/master/modules/store/src/meta-reducers/utils.ts
