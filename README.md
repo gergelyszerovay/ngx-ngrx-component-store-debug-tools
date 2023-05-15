@@ -62,11 +62,11 @@ export class CardStore extends ComponentStore<CardState> {
 }
 ```
 
-When the component creates this store, the decorator shows its initial state:
+When the component creates this store, it shows the initial state:
 
 ![console](https://raw.githubusercontent.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools/master/.github/images/1-empty.png)
 
-After we call `store.updateUser({ user: 'Ben' })`, the decorator shows the new state and the diff:
+After we call `store.updateUser({ user: 'Ben' })`, it shows the new state and the diff:
 
 ![console](https://raw.githubusercontent.com/gergelyszerovay/ngx-ngrx-component-store-debug-tools/master/.github/images/2-ben.png)
 
